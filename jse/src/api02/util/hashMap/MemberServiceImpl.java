@@ -38,10 +38,21 @@ public class MemberServiceImpl implements MemberService {
 		 * 바라보고 있기 때문이다.
 		 * vo.getID() 를 "id" 라는 리터럴("",상수값,고정값)에 저장
 		 */
-		map.put("id", vo.getId());
+		map.put("id", String.valueOf(vo.getId()));
 		map.put("password", vo.getPassword());
+		/*
+		 * 1. 첫번째 에러 유형
+		 * map.put(vo.getID(), vo.getPassword());
+		 * 개발자가 많이 하는 착각의 코딩
+		 */
 		map.put("name", vo.getName());
-		map.put("age", vo.getAge());
+		/*
+		 * 2. 두번째 에러 유형
+		 * map.put("age", vo.getAge());
+		 * valueOf() 는 api.lang.string.ValueOfDemo 참조
+		 * 
+		 */
+		map.put("age", String.valueOf(vo.getAge()));
 		map.put("addr", vo.getAddr());
 		
 	}
@@ -56,10 +67,17 @@ public class MemberServiceImpl implements MemberService {
 		 * 필드에 선언해준다.
 		 */
 		System.out.println("맵에 담긴 ID : "+ map.get("id"));
-		if(!map.containsKey("id")){
+		if(!map.containsKey("id") || !(map.get("id").equals(id))){
 			System.out.println("입력하신 ID 는 존재하지 않습니다."
 					+ "다시 입력하세요.");
 		}else{
+			/*
+			 * 3. 세번째 에러유형 NullPointerException
+			 * map.get(KEY) 에서 KEY 는 맵을 선언한 타입과 일치해야한다.
+			 * 현재 필드에 선언된 맵은 <String, Object> 이므로
+			 * password 는 String 값이 되어야 한다.
+			 * 따라서 "password" 로 해야 합니다.
+			 */
 			if(!(map.get("password").equals(password))){
 				System.out.println("비번이 달라요"
 						+ "다시 입력하세요");
